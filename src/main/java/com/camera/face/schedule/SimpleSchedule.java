@@ -19,6 +19,6 @@ public class SimpleSchedule {
      */
     @Scheduled(cron = "* * * * 1/1 ?")
     private void checkSubscriberStatus() {
-        subscriberService.subscriber();
+        //subscriberService.subscriber();
     }
 }
