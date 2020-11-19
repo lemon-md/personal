@@ -20,7 +20,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 @ServerEndpoint(value = "/faceWebSocketServer")
 public class WebSocketServer {
-
     private static final AtomicInteger ONLINE_COUNT = new AtomicInteger(0);
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的Session对象。
@@ -64,7 +63,7 @@ public class WebSocketServer {
     /**
      * 实现服务器主动推送
      */
-    public static void sendMessage(Session session ,String message){
+    public synchronized static void sendMessage(Session session ,String message){
         try {
             session.getBasicRemote().sendText(message);
         } catch (IOException e) {
