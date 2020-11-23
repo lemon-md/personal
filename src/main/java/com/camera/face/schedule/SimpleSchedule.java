@@ -17,8 +17,8 @@ public class SimpleSchedule {
     /**
      * 定时任务 一个月定时去刷新订阅事件
      */
-    @Scheduled(cron = "* * * * 1/1 ?")
+    @Scheduled(cron = "0 0 0 0 1/2 ?")
     private void checkSubscriberStatus() {
-        subscriberService.subscriber();
+        //subscriberService.subscriber();
     }
 }
