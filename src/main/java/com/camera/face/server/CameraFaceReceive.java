@@ -37,6 +37,7 @@ public class CameraFaceReceive implements ApplicationRunner {
 
     static {
         try {
+            // TODO: 2020/11/23 部署的时候换成摄像机的http端口
             serverSocket = new ServerSocket(8097);
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,7 +48,6 @@ public class CameraFaceReceive implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         try {
             //创建一个服务器对象，端口是摄像机端口8097
-            //创建一个客户端对象，这里的作用是用作多线程，必经服务器服务的不是一个客户端
             Socket client = null;
             boolean flag = true;
             System.out.println("服务器已启动，等待客户端请求。。。。");
@@ -82,7 +82,7 @@ public class CameraFaceReceive implements ApplicationRunner {
                             lastData = data;
                             System.out.println("confirm");
                         } else {
-                            System.err.println("去重");
+                            System.out.println("去重");
                         }
                         try {
                             Thread.sleep(1000L);
