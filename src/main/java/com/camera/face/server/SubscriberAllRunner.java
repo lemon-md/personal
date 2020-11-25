@@ -20,6 +20,6 @@ public class SubscriberAllRunner implements ApplicationRunner {
     private SubscriberService subscriberService;
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        //subscriberService.subscriber();
+        subscriberService.subscriber();
     }
 }
