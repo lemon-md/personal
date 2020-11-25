@@ -19,7 +19,7 @@ public class SubscriberAllRunner implements ApplicationRunner {
     @Autowired
     private SubscriberService subscriberService;
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         subscriberService.subscriber();
     }
 }

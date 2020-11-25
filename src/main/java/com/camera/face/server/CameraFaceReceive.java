@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author cy
  * @date 2020/10/15 11:46
  */
-@Order(value = 1)
+@Order(value = 2)
 @Component
 public class CameraFaceReceive implements ApplicationRunner {
     private static String lastData = "";
