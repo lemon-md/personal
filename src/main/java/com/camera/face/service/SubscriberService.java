@@ -20,9 +20,9 @@ public class SubscriberService {
         // TODO: 2020/11/23 摄像机http端口
         Integer port = 8097;
         // TODO: 2020/11/23 本地服务的ip
-        String address = "192.168.1.159";
+        String address = "101.133.221.107";
         // TODO: 2020/11/23 摄像机的http地址 拼接请求url
-        String url = "http://192.168.1.197:8097";
+        String url = "http://47.114.58.231:8097";
         String username = "ApiAdmin";
         String password = "xinlu123321";
 
