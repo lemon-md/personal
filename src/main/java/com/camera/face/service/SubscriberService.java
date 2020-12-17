@@ -16,20 +16,18 @@ import java.util.Map;
 @Slf4j
 @Component
 public class SubscriberService {
+    // TODO: 2020/11/23 摄像机http端口
+    Integer port = 8097;
+    // 自动获取本地ip
+    //String address = "101.133.221.107"; 部署公网方案
+    String address = NetUtil.getIpByHost(NetUtil.getLocalhostStr());
+    // TODO: 2020/11/23 摄像机的http地址 拼接请求url
+    //String url = "http://47.114.58.231:8097";  使用frp方案
+    String url = "http://192.168.1.197:8097";
+    String username = "ApiAdmin";
+    String password = "xinlu123321";
 
     public void subscriber(){
-        // TODO: 2020/11/23 摄像机http端口
-        Integer port = 8097;
-        // 自动获取本地ip
-        //String address = "101.133.221.107";
-        //String address = "192.168.1.173";
-        String address = NetUtil.getIpByHost(NetUtil.getLocalhostStr());
-        // TODO: 2020/11/23 摄像机的http地址 拼接请求url
-        //String url = "http://47.114.58.231:8097";
-        String url = "http://192.168.1.197:8097";
-        String username = "ApiAdmin";
-        String password = "xinlu123321";
-
         Map<String, Object> map = new HashMap<>();
         map.put("Topic", "all");
         map.put("ID", 1);
@@ -38,10 +36,29 @@ public class SubscriberService {
         // 订阅三个月
         map.put("timeOut", 30*24*3600*3);
         String json = JSONUtil.parseFromMap(map).toString();
-        // 订阅
+        // todo 订阅 记得解开
         String result = HttpRequestUtils.sendPost(url +"/SDCAPI/V1.0/Metadata/Subscription/Subscriber", "Topic=all&ID=1", username, password, json, "json");
         log.info("订阅全部智能数据：{}",result);
         String s = HttpRequestUtils.sendGet(url+"/SDCAPI/V1.0/Metadata/Subscription", "", "ApiAdmin", "xinlu123321", "json");
         log.info("查询订阅：{}",s);
+    }
+
+    public String check(){
+        String s = HttpRequestUtils.sendGet(url+"/SDCAPI/V1.0/Metadata/Subscription", "", "ApiAdmin", "xinlu123321", "json");
+        log.info("check : {}",s);
+        return s;
+    }
+
+    public String subscribe() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("Topic", "all");
+        map.put("ID", 1);
+        map.put("address", address);
+        map.put("port", port);
+        map.put("timeOut", 30*24*3600*3);
+        String json = JSONUtil.parseFromMap(map).toString();
+        String result = HttpRequestUtils.sendPost(url +"/SDCAPI/V1.0/Metadata/Subscription/Subscriber", "Topic=all&ID=1", username, password, json, "json");
+        log.info("subscribe : {}",result);
+        return result;
     }
 }
