@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 1、摄像机设置一个端口
  * 2、监听端口
  * 3、摄像机开启人脸参数
- * 4、订阅摄像机Human数据（需要摄像机ip， 服务端ip
+ * 4、订阅摄像机Human数据（需要摄像机ip， 服务端ip）
  * @author cy
  * @date 2020/10/15 11:46
  */
@@ -37,7 +37,7 @@ public class CameraFaceReceive implements ApplicationRunner {
 
     static {
         try {
-            // TODO: 2020/11/23 部署的时候换成摄像机的http端口
+            // TODO: 2020/11/23 换成摄像机的http端口
             serverSocket = new ServerSocket(8097);
         } catch (IOException e) {
             e.printStackTrace();
