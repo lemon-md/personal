@@ -1,5 +1,6 @@
 package com.camera.face.server;
 
+import cn.hutool.core.net.NetUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -34,11 +35,11 @@ public class CameraFaceReceive implements ApplicationRunner {
     private static String lastData = "";
     private static final AtomicInteger NUM_COUNT = new AtomicInteger(0);
     private static ServerSocket serverSocket = null;
+    private static int port = 8097;
 
     static {
         try {
-            // TODO: 2020/11/23 换成摄像机的http端口
-            serverSocket = new ServerSocket(8097);
+            serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,7 +51,9 @@ public class CameraFaceReceive implements ApplicationRunner {
             //创建一个服务器对象，端口是摄像机端口8097
             Socket client = null;
             boolean flag = true;
-            System.out.println("服务器已启动，等待客户端请求。。。。");
+            String address = NetUtil.getIpByHost(NetUtil.getLocalhostStr());
+            System.out.println("服务器已启动，ip={"+address+"}");
+            System.out.println("请确认端口是否是:"+port);
             while (flag) {
                 client = serverSocket.accept();
                 BufferedReader in = null;

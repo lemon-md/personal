@@ -20,6 +20,7 @@ public class SubscriberAllRunner implements ApplicationRunner {
     private SubscriberService subscriberService;
     @Override
     public void run(ApplicationArguments args) {
-        subscriberService.subscriber();
+        subscriberService.subscribe();
+        subscriberService.check();
     }
 }
