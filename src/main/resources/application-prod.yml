@@ -1,0 +1,9 @@
+server:
+  port: 8098
+
+camera:
+  port: 8097
+  url: http://192.168.20.10:8097
+  username: ApiAdmin
+  password: xinlu123321
+  address: 192.168.20.11

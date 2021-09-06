@@ -51,21 +51,16 @@ public class CameraFaceReceive implements ApplicationRunner {
             //创建一个服务器对象，端口是摄像机端口8097
             Socket client = null;
             boolean flag = true;
-            String address = NetUtil.getIpByHost(NetUtil.getLocalhostStr());
-            System.out.println("服务器已启动，ip={"+address+"}");
+            System.out.println("服务器已启动，ip={"+NetUtil.getIpByHost(NetUtil.getLocalhostStr())+"}");
             System.out.println("请确认端口是否是:"+port);
             while (flag) {
                 client = serverSocket.accept();
                 BufferedReader in = null;
                 String temp = null;
                 String info = "";
-                boolean flag1 = false;
                 in = new BufferedReader(new InputStreamReader(client.getInputStream()));
                 while ((temp = in.readLine()) != null) {
                     if (temp.contains("{")) {
-                        flag1 = true;
-                    }
-                    if (flag1) {
                         info += temp;
                     }
                 }
@@ -73,26 +68,37 @@ public class CameraFaceReceive implements ApplicationRunner {
                 if (info.contains("metadataObject")) {
                     Map<String, Map<String, Object>> bodyMap = JSON.parseObject(info, new TypeReference<Map<String, Map<String, Object>>>() {
                     });
-                    JSONArray objects = (JSONArray) bodyMap.get("metadataObject").get("subImageList");
-                    List<String> strings = objects.toJavaList(String.class);
-                    strings.forEach(s -> {
-                        JSONObject jsonObject = JSON.parseObject(s);
-                        String data = "showFaceImg=" + jsonObject.get("data");
-                        if (!lastData.equals(data)) {
-                            // 发送
-                            String message = NUM_COUNT.incrementAndGet() + "=showFaceImg=" + jsonObject.get("data");
-                            WebSocketServer.broadCastInfo(message);
-                            lastData = data;
-                            System.out.println("confirm");
-                        } else {
-                            System.out.println("去重");
-                        }
-                        try {
-                            Thread.sleep(1000L);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
+                    // 所有人脸数据
+                    Map<String, Object> dataMap = bodyMap.get("metadataObject");
+                    // 人脸图片数据
+                    JSONArray objects = (JSONArray) dataMap.get("subImageList");
+                    // 人脸表情
+                    Integer expression = (Integer) dataMap.get("expression");
+                    System.out.println("人脸表情:" + expression);
+                    if (expression == 0) {
+                        List<String> strings = objects.toJavaList(String.class);
+                        strings.stream()
+                                // imageType == 11 为人脸图
+                                .filter(s -> (int) JSON.parseObject(s).get("imageType") == 11)
+                                .forEach(s -> {
+                                    JSONObject jsonObject = JSON.parseObject(s);
+                                    String data = "showFaceImg=" + jsonObject.get("data");
+                                    if (!lastData.equals(data)) {
+                                        // 发送
+                                        String message = NUM_COUNT.incrementAndGet() + "=showFaceImg=" + jsonObject.get("data");
+                                        WebSocketServer.broadCastInfo(message);
+                                        lastData = data;
+                                        System.out.println("----收到一张图片----");
+                                    } else {
+                                        System.out.println("去重");
+                                    }
+                                    try {
+                                        Thread.sleep(1000L);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                    }
                 }
                 in.close();
                 client.close();

@@ -1,0 +1,9 @@
+server:
+  port: 8098
+
+camera:
+  port: 8097      #摄像机http端口
+  url: http://192.168.1.197:8097      #摄像机api地址
+  username: ApiAdmin            #digest鉴权
+  password: xinlu123321         #digest鉴权
+  address: 192.168.1.173        #接收人脸图片服务地址即 本机IP
